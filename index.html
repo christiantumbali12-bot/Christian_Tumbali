@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>Online Shop with Cart</title> 
+  <style> 
+    * { margin: 0; padding: 0; box-sizing: border-box; } 
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #f4f4f4; 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+    } 
+
+    header { 
+      background-color: #8B4513; 
+      color: white; 
+      padding: 10px 20px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap; 
+    } 
+
+    .logo { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+    } 
+
+    .logo img { 
+      width: 60px; 
+      height: auto; 
+      display: block; 
+    } 
+
+    .logo h1 { 
+      margin: 0; 
+      font-size: 24px; 
+      color: white; 
+    } 
+
+    nav ul { 
+      list-style: none; 
+      display: flex; 
+      flex-wrap: wrap; 
+      margin-top: 10px; 
+    } 
+
+    nav ul li { 
+      margin-left: 15px; 
+    } 
+
+    nav ul li a { 
+      color: white; 
+      text-decoration: none; 
+      cursor: pointer; 
+      padding: 6px 12px; 
+      border-radius: 4px; 
+      font-size: 15px; 
+    } 
+
+    nav ul li a.active { 
+      background-color: #5C2C0C; 
+    } 
+
+    main { 
+      padding: 20px; 
+      flex: 1; 
+    } 
+
+    section { display: none; } 
+    section.active { display: block; } 
+
+    /* ✅ Shopee-style responsive product grid */
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* default: 2 per row on phones */
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    /* Tablets */
+    @media (min-width: 600px) {
+      .product-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Laptops / Desktops */
+    @media (min-width: 992px) {
+      .product-list {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .product {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+      text-align: left;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .product:hover {
+      transform: translateY(-3px);
+    }
+
+    .product img {
+      width: 100%;
+      aspect-ratio: 1/1;     /* keeps image square */
+      object-fit: cover;     /* crops image neatly */
+      display: block;
+    }
+
+    .product h3 {
+      margin: 8px;
+      font-size: 14px;
+      font-weight: normal;
+      color: #222;
+      line-height: 1.3em;
+      height: 2.6em;        /* limit text to 2 lines */
+      overflow: hidden;
+    }
+
+    .product p {
+      margin: 0 8px 8px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #E53935;       /* red price */
+    }
+
+    .product button {
+      display: inline-block;
+      margin: 0 8px 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      background: #8B4513;
+      color: white;
+    }
+
+    .product button:hover {
+      background: #5C2C0C;
+    }
+
+    footer { 
+      text-align: center; 
+      background-color: #8B4513; 
+      color: white; 
+      padding: 8px; 
+      margin-top: auto; 
+      position: fixed; 
+      bottom: 0; 
+      width: 100%; 
+      box-sizing: border-box; 
+      font-size: 14px; 
+    } 
+
+    form input, form textarea { 
+      width: 100%; 
+      padding: 10px; 
+      margin: 10px 0; 
+      border-radius: 4px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; 
+    } 
+
+    form button { 
+      background-color: #8B4513; 
+      color: white; 
+      padding: 10px 20px; 
+      border: none; 
+      border-radius: 4px; 
+      cursor: pointer; 
+    } 
+
+    form button:hover { 
+      background-color: #A0522D; 
+    } 
+
+    /*notification*/ 
+    .notification { 
+      position: fixed; 
+      top: -60px; 
+
+      left: 50%; 
+      transform: translateX(-50%); 
+      background: #D2B48C;   
+      color: #111; 
+      padding: 12px 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+      opacity: 0; 
+      transition: opacity 0.4s ease, top 0.4s ease; 
+      z-index: 9999; 
+      font-weight: bold; 
+    } 
+    .notification.show { 
+      top: 20px; 
+      opacity: 1; 
+    } 
+
+    /* Profile styles */ 
+    .profile-card { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15); 
+      max-width: 600px; 
+      margin: 0 auto; 
+    } 
+
+    .profile-header { 
+      display: flex; 
+      align-items: center; 
+      gap: 15px; 
+      flex-wrap: wrap; 
+      text-align: center; 
+      justify-content: center; 
+    } 
+
+    .profile-header img { 
+      width: 100px; 
+      height: 100px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+    } 
+
+    .profile-header h2 { 
+      font-size: 22px; 
+      margin: 0; 
+    } 
+
+    .profile-details { 
+      margin-top: 15px; 
+      font-size: 15px; 
+      line-height: 1.6; 
+    } 
+
+    .profile-details strong {
+  display: inline;   /* no block spacing */
+  width: auto;       /* no fixed gap */
+  font-weight: bold;
+  margin-right: 5px; /* small spacing */
+} 
+
+    .profile-details a { 
+      color: black; 
+      text-decoration: none; 
+    } 
+
+    a:hover { 
+      text-decoration: underline; 
+    } 
+
+/* Responsive adjustments */
+@media (max-width: 768px) { 
+  header { 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+  } 
+
+  nav ul { 
+    flex-direction: row;  
+    justify-content: center; 
+    flex-wrap: wrap;       
+    gap: 10px; 
+    width: auto;
+    padding: 0;
+  } 
+
+  nav ul li { 
+    margin: 0; 
+  } 
+
+  .logo h1 { 
+    font-size: 20px; 
+  } 
+
+  footer { 
+    font-size: 12px; 
+    padding: 6px; 
+  } 
+}
+  </style> 
+</head> 
+<body> 
+  <header> 
+    <div class="logo"> 
+      <img src="Logo.png" alt="Logo"> 
+      <h1>Sepak Takraw Shop</h1> 
+    </div> 
+    <nav> 
+      <ul> 
+        <li><a href="#" onClick="showContent('home', this)" class="active">Home</a></li> 
+        <li><a href="#" onClick="showContent('products', this)">Products</a></li> 
+        <li><a href="#" onClick="showContent('contact', this)">Contact</a></li> 
+        <li><a href="#" onClick="showContent('profile', this)">Profile</a></li> 
+      </ul> 
+    </nav> 
+  </header> 
+
+  <main> 
+    <!-- Home --> 
+    <section id="home" class="active"> 
+      <h2>Welcome to My Shop</h2><br> 
+      <p>Welcome to <strong>Sepak Takraw Shop</strong> — your one-stop store for all things related to the exciting and traditional Southeast Asian sport of <em>Sepak Takraw</em>.</p><br> 
+      <p>We specialize in providing <strong>authentic equipment</strong> such as takraw balls, jerseys, keychain and shoes. Our mission is to support the growth of Sepak Takraw by offering high-quality products at affordable prices.</p><br> 
+      <p>Whether you’re a student, a hobbyist, or part of a competitive team, <strong>Sepak Takraw Shop</strong> is committed to giving you the best gear so you can play with confidence and pride.</p><br> 
+      <p><strong><a href="https://en.wikipedia.org/wiki/Sepak_takraw" style="text-decoration: none; color: #8B4513;"> About Sepak Takraw... </a></strong></p><br> 
+      <p><strong>⚡ Play strong. Play proud. Play Sepak Takraw!</strong></p> 
+    </section> 
+
+    <!-- Products Section --> 
+    <section id="products"> 
+      <h2>Featured Products</h2> 
+      <div class="product-list"> 
+        <div class="product" data-id="1" data-name="Nanyang Shoes" data-price="800.00" data-image="Product 1.jpg"> 
+          <img src="Product 1.jpg" alt="Nanyang Shoes"> 
+          <h3>Nanyang Shoes</h3> 
+          <p>₱800.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="2" data-name="Jersey" data-price="500.00" data-image="Product 2.jpg"> 
+          <img src="Product 2.jpg" alt="Jersey"> 
+          <h3>Jersey</h3> 
+          <p>₱500.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="3" data-name="Jersey" data-price="500.00" data-image="Product 3.jpg"> 
+          <img src="Product 3.jpg" alt="Jersey"> 
+          <h3>Jersey</h3> 
+          <p>₱500.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="4" data-name="Nanyang Shoes with Ball" data-price="1200.00" data-image="Product 4.jpg"> 
+          <img src="Product 4.jpg" alt="Nanyang Shoes with Ball"> 
+          <h3>Nanyang Shoes with Ball</h3> 
+          <p>₱1200.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="5" data-name="Sepak Ball" data-price="856.00" data-image="Product 5.jpg"> 
+          <img src="Product 5.jpg" alt="Sepak Ball"> 
+          <h3>Sepak Ball</h3> 
+          <p>₱856.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="6" data-name="Sepak Ball Keychain" data-price="119.29" data-image="Product 6.jpg"> 
+          <img src="Product 6.jpg" alt="Sepak Ball Keychain"> 
+          <h3>Sepak Ball Keychain</h3> 
+          <p>₱119.29</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="7" data-name="Sepak Stickers" data-price="50.00" data-image="Product 7.jpg"> 
+          <img src="Product 7.jpg" alt="Sepak Stickers"> 
+          <h3>Sepak Stickers</h3> 
+          <p>₱50.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+
+        <div class="product" data-id="8" data-name="Nanyang Shoes Limited Edition" data-price="1800.00" data-image="Product 8.jpg"> 
+          <img src="Product 8.jpg" alt="Nanyang Shoes Limited Edition"> 
+          <h3>Nanyang Shoes Limited Edition</h3> 
+          <p>₱1800.00</p> 
+          <button onClick="addToCart(this)">Add to Cart</button> 
+          <button onClick="buyNow(this)">Buy Now</button> 
+        </div> 
+      </div> 
+    </section>         
+
+    <!-- Contact --> 
+    <section id="contact"> 
+      <form id="contactForm"> 
+        <h2 style="text-align:center;">Contact Us</h2> 
+        <input type="text" id="name" placeholder="Your Name" required> 
+        <input type="email" id="email" placeholder="Your Email" required> 
+        <textarea id="message" rows="5" placeholder="Your Message" required></textarea> 
+        <button type="submit">Send Message</button> 
+      </form> 
+    </section> 
+
+    <!-- Profile --> 
+    <section id="profile"> 
+      <div class="profile-card"> 
+        <div class="profile-header"> 
+          <img src="ME.jpg" alt="Christian Tumbali"> 
+          <h2>Christian Tumbali</h2> 
+        </div> 
+        <div class="profile-details"> 
+          <p><strong>Address:</strong> Niug Norte Sto. Niño Cagayan</p> 
+          <p><strong>Age:</strong> 21 Years Old</p> 
+          <p><strong>Year/Section:</strong> 2-B</p> 
+          <p><strong>Contact Number:</strong> 0969-255-6392</p> 
+          <p><strong>Facebook:</strong> <a href="https://www.facebook.com/christian.tumbali.54?mibextid=ZbWKwL" target="_blank">Christian Tumbali</a></p> 
+          <p><strong>Email:</strong> <a href="mailto:christiantumbali12@gmail.com">christiantumbali12@gmail.com</a></p> 
+          <p><strong>Professor:</strong> Jason Brian Q. Arugay</p> 
+          <p><strong>Subject:</strong> IT ELECTIVE 2</p> 
+        </div> 
+      </div> 
+    </section> 
+  </main> 
+
+  <footer> 
+    <p>Sepak Takraw Shop by Christian Tumbali</p> 
+  </footer> 
+
+  <!-- Notification --> 
+  <div id="notification" class="notification">Message Sent!</div> 
+
+  <script> 
+    // Switches between sections and updates the active navigation link 
+    function showContent(id, el) { 
+      document.querySelectorAll("main section, nav a").forEach(i => i.classList.remove("active")); 
+      [document.getElementById(id), el].forEach(i => i.classList.add("active")); 
+    } 
+
+    /* Function to display a temporary floating notification message */ 
+    function showNotification(msg) { 
+      const notification = document.getElementById("notification"); 
+      notification.textContent = msg; 
+      notification.classList.add("show"); 
+      setTimeout(() => notification.classList.remove("show"), 3000); 
+    } 
+
+    /* Handles contact form submission */ 
+    document.getElementById("contactForm").addEventListener("submit", function(e) { 
+      e.preventDefault();  
+      document.getElementById("name").value = ""; 
+      document.getElementById("email").value = ""; 
+      document.getElementById("message").value = ""; 
+      showNotification("Message sent!"); 
+    }); 
+  </script> 
+</body> 
+</html>
