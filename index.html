@@ -3,7 +3,7 @@
 <head> 
   <meta charset="UTF-8" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
-  <title>Online Shop with Cart</title> 
+  <title>Christian's Website</title> 
   <style> 
     * { margin: 0; padding: 0; box-sizing: border-box; } 
     body { 
@@ -23,6 +23,24 @@
       align-items: center; 
       flex-wrap: wrap; 
     } 
+	.banner {
+      background: url('img.jpg') no-repeat center center/cover;
+      height: 30vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+    }
+
+    .banner h2 {
+      background: rgba(0, 0, 0, 0.4);
+      display: inline-block;
+      padding: 0.7rem 2rem;
+      border-radius: 5px;
+      font-size: 2.2rem;
+    }
+
 
     .logo { 
       display: flex; 
@@ -65,6 +83,7 @@
     nav ul li a.active { 
       background-color: #5C2C0C; 
     } 
+	
 
     main { 
       padding: 20px; 
@@ -74,26 +93,18 @@
     section { display: none; } 
     section.active { display: block; } 
 
-    /* ✅ Shopee-style responsive product grid */
+    /* Product Grid */
     .product-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* default: 2 per row on phones */
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin: 15px 0;
     }
-
-    /* Tablets */
     @media (min-width: 600px) {
-      .product-list {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .product-list { grid-template-columns: repeat(3, 1fr); }
     }
-
-    /* Laptops / Desktops */
     @media (min-width: 992px) {
-      .product-list {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      .product-list { grid-template-columns: repeat(4, 1fr); }
     }
 
     .product {
@@ -107,49 +118,40 @@
       transition: transform 0.2s;
     }
 
-    .product:hover {
-      transform: translateY(-3px);
-    }
-
-    .product img {
-      width: 100%;
-      aspect-ratio: 1/1;     /* keeps image square */
-      object-fit: cover;     /* crops image neatly */
-      display: block;
-    }
-
-    .product h3 {
-      margin: 8px;
-      font-size: 14px;
-      font-weight: normal;
-      color: #222;
-      line-height: 1.3em;
-      height: 2.6em;        /* limit text to 2 lines */
-      overflow: hidden;
-    }
-
+    .product:hover { transform: translateY(-3px); }
+	
+    .product img { width: 100%; 
+	               aspect-ratio: 1/1; 
+				   object-fit: cover; 
+				   display: block; }
+				   
+    .product h3 { margin: 8px; 
+	             font-size: 14px; 
+				 color: #222; 
+				 line-height: 1.3em; 
+				 height: 2.6em; 
+				 overflow: hidden; }
+				 
     .product p {
-      margin: 0 8px 8px;
-      font-size: 15px;
-      font-weight: bold;
-      color: #E53935;       /* red price */
-    }
-
-    .product button {
-      display: inline-block;
-      margin: 0 8px 8px;
-      padding: 6px 10px;
-      font-size: 13px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      background: #8B4513;
-      color: white;
-    }
-
-    .product button:hover {
-      background: #5C2C0C;
-    }
+	           margin: 0 8px 8px; 
+	            font-size: 15px; 
+				font-weight: bold; 
+				color: #E53935; 
+				}
+				
+    .product button { 
+	     margin: 0 8px 8px; 
+	     padding: 6px 10px; 
+		 border-radius: 4px; 
+		 border: none; 
+		 cursor: pointer; 
+		background: #8B4513; 
+		color: white; 
+		}
+					 
+    .product button:hover { 
+	    background: #5C2C0C; 
+	}
 
     footer { 
       text-align: center; 
@@ -164,33 +166,10 @@
       font-size: 14px; 
     } 
 
-    form input, form textarea { 
-      width: 100%; 
-      padding: 10px; 
-      margin: 10px 0; 
-      border-radius: 4px; 
-      border: 1px solid #ccc; 
-      box-sizing: border-box; 
-    } 
-
-    form button { 
-      background-color: #8B4513; 
-      color: white; 
-      padding: 10px 20px; 
-      border: none; 
-      border-radius: 4px; 
-      cursor: pointer; 
-    } 
-
-    form button:hover { 
-      background-color: #A0522D; 
-    } 
-
-    /*notification*/ 
+    /* Notification */
     .notification { 
       position: fixed; 
       top: -60px; 
-
       left: 50%; 
       transform: translateX(-50%); 
       background: #D2B48C;   
@@ -203,12 +182,9 @@
       z-index: 9999; 
       font-weight: bold; 
     } 
-    .notification.show { 
-      top: 20px; 
-      opacity: 1; 
-    } 
+    .notification.show { top: 20px; opacity: 1; } 
 
-    /* Profile styles */ 
+    /* Profile */
     .profile-card { 
       background: white; 
       padding: 20px; 
@@ -217,80 +193,113 @@
       max-width: 600px; 
       margin: 0 auto; 
     } 
+    .profile-header {
+      display: flex;
+      flex-direction: column;   
+      align-items: center;      
+      text-align: center;
+      gap: 10px;
+    }
+    .profile-header img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
+    .profile-header h2 { font-size: 22px; margin: 0; }
+    .profile-details { margin-top: 15px; font-size: 15px; line-height: 1.6; }
+    .profile-details strong { margin-right: 5px; }
+    .profile-details a { color: black; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .profile-header { 
-      display: flex; 
-      align-items: center; 
-      gap: 15px; 
-      flex-wrap: wrap; 
-      text-align: center; 
-      justify-content: center; 
-    } 
+    /* CONTACT FORM */
+    #contact {
+      display: none;
+    }
+    #contact.active {
+      display: block;
+    }
+    .contact-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #f9f9f9;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .contact-container h2 {
+      color: #8B4513;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .contact-container p {
+      color: #333;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+    .contact-container form input,
+    .contact-container form textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      outline: none;
+      resize: none;
+    }
+    .contact-container form input:focus,
+    .contact-container form textarea:focus {
+      border-color: #8B4513;
+      box-shadow: 0 0 4px rgba(139, 69, 19, 0.3);
+    }
+    .contact-container form button {
+      width: 100%;
+      padding: 14px;
+      background-color: #8B4513;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .contact-container form button:hover {
+      background-color: #5C2C0C;
+    }
 
-    .profile-header img { 
-      width: 100px; 
-      height: 100px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-    } 
-
-    .profile-header h2 { 
-      font-size: 22px; 
-      margin: 0; 
-    } 
-
-    .profile-details { 
-      margin-top: 15px; 
-      font-size: 15px; 
-      line-height: 1.6; 
-    } 
-
-    .profile-details strong {
-  display: inline;   /* no block spacing */
-  width: auto;       /* no fixed gap */
-  font-weight: bold;
-  margin-right: 5px; /* small spacing */
-} 
-
-    .profile-details a { 
-      color: black; 
-      text-decoration: none; 
-    } 
-
-    a:hover { 
-      text-decoration: underline; 
-    } 
-
-/* Responsive adjustments */
-@media (max-width: 768px) { 
-  header { 
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center;
-  } 
-
-  nav ul { 
-    flex-direction: row;  
-    justify-content: center; 
-    flex-wrap: wrap;       
-    gap: 10px; 
-    width: auto;
-    padding: 0;
-  } 
-
-  nav ul li { 
-    margin: 0; 
-  } 
-
-  .logo h1 { 
-    font-size: 20px; 
-  } 
-
-  footer { 
-    font-size: 12px; 
-    padding: 6px; 
-  } 
+    /* Responsive */
+    @media (max-width: 768px) { 
+      header { flex-direction: column; align-items: center; text-align: center; } 
+      nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
+      footer { font-size: 12px; padding: 6px; }
+      .contact-container { padding: 25px 20px; }
+      .contact-container h2 { font-size: 26px; }
+    }
+	.sport-gallery {
+  display: flex;
+  flex-wrap: wrap;
+   justify-content: center;
+  gap: 25px;
+  margin-top: 6px;
 }
+
+.sport-gallery img {
+  width: 70px;             
+  aspect-ratio: 1 / 1;    
+  object-fit: cover;        
+  border-radius: 8px;       
+  border: 1px solid #ccc;
+  transition: transform 0.3s ease;
+}
+
+.sport-gallery img:hover {
+  transform: scale(3.05);   /* slight zoom effect on hover */
+}
+
+/* Mobile-friendly stacking */
+@media (max-width: 600px) {
+  .sport-gallery {
+    justify-content: center;
+  }
+}
+
   </style> 
 </head> 
 <body> 
@@ -309,13 +318,18 @@
     </nav> 
   </header> 
 
+
+  
   <main> 
-    <!-- Home --> 
+<!-- Home --> 
     <section id="home" class="active"> 
-      <h2>Welcome to My Shop</h2><br> 
-      <p>Welcome to <strong>Sepak Takraw Shop</strong> — your one-stop store for all things related to the exciting and traditional Southeast Asian sport of <em>Sepak Takraw</em>.</p><br> 
+      <div class="banner">
+    <h2>Welcome to My Website</h2>
+  </div>
+   <h2>Welcome to Sepak Takraw Shop</h2> <br>
+      <p>Welcome to <strong>Sepak Takraw Shop</strong> your one-stop store for all things related to the exciting and traditional Southeast Asian sport of <em>Sepak Takraw</em>.</p><br> 
       <p>We specialize in providing <strong>authentic equipment</strong> such as takraw balls, jerseys, keychain and shoes. Our mission is to support the growth of Sepak Takraw by offering high-quality products at affordable prices.</p><br> 
-      <p>Whether you’re a student, a hobbyist, or part of a competitive team, <strong>Sepak Takraw Shop</strong> is committed to giving you the best gear so you can play with confidence and pride.</p><br> 
+      <p><strong>Sepak Takraw Shop</strong> is committed to giving you the best gear so you can play with confidence and pride.</p><br> 
       <p><strong><a href="https://en.wikipedia.org/wiki/Sepak_takraw" style="text-decoration: none; color: #8B4513;"> About Sepak Takraw... </a></strong></p><br> 
       <p><strong>⚡ Play strong. Play proud. Play Sepak Takraw!</strong></p> 
     </section> 
@@ -391,15 +405,18 @@
     </section>         
 
     <!-- Contact --> 
-    <section id="contact"> 
-      <form id="contactForm"> 
-        <h2 style="text-align:center;">Contact Us</h2> 
-        <input type="text" id="name" placeholder="Your Name" required> 
-        <input type="email" id="email" placeholder="Your Email" required> 
-        <textarea id="message" rows="5" placeholder="Your Message" required></textarea> 
-        <button type="submit">Send Message</button> 
-      </form> 
-    </section> 
+     <section id="contact"> 
+      <div class="contact-container">
+        <h2>Contact Us</h2>
+        <p>We’d love to hear from you! Send us a message and we’ll get back to you soon.</p>
+        <form id="contactForm">
+          <input type="text" id="name" placeholder="Your Name" required>
+          <input type="email" id="email" placeholder="Your Email" required>
+          <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
 
     <!-- Profile --> 
     <section id="profile"> 
@@ -417,6 +434,16 @@
           <p><strong>Email:</strong> <a href="mailto:christiantumbali12@gmail.com">christiantumbali12@gmail.com</a></p> 
           <p><strong>Professor:</strong> Jason Brian Q. Arugay</p> 
           <p><strong>Subject:</strong> IT ELECTIVE 2</p> 
+		  <p><strong>Sport:</strong> Sepak Takraw</p>
+      <div class="sport-gallery">
+ 		 <img src="img1.jpg">
+ 		 <img src="img2.jpg">
+ 		 <img src="img3.jpg">
+ 		 <img src="img4.jpg">
+		  <img src="img5.jpg">
+		  <img src="img6.jpeg">
+       </div>
+
         </div> 
       </div> 
     </section> 
@@ -425,31 +452,24 @@
   <footer> 
     <p>Sepak Takraw Shop by Christian Tumbali</p> 
   </footer> 
-
-  <!-- Notification --> 
   <div id="notification" class="notification">Message Sent!</div> 
 
   <script> 
-    // Switches between sections and updates the active navigation link 
     function showContent(id, el) { 
       document.querySelectorAll("main section, nav a").forEach(i => i.classList.remove("active")); 
       [document.getElementById(id), el].forEach(i => i.classList.add("active")); 
     } 
 
-    /* Function to display a temporary floating notification message */ 
     function showNotification(msg) { 
-      const notification = document.getElementById("notification"); 
-      notification.textContent = msg; 
-      notification.classList.add("show"); 
-      setTimeout(() => notification.classList.remove("show"), 3000); 
+      const n = document.getElementById("notification"); 
+      n.textContent = msg; 
+      n.classList.add("show"); 
+      setTimeout(() => n.classList.remove("show"), 3000); 
     } 
 
-    /* Handles contact form submission */ 
-    document.getElementById("contactForm").addEventListener("submit", function(e) { 
+    document.getElementById("contactForm").addEventListener("submit", e => { 
       e.preventDefault();  
-      document.getElementById("name").value = ""; 
-      document.getElementById("email").value = ""; 
-      document.getElementById("message").value = ""; 
+      e.target.reset(); 
       showNotification("Message sent!"); 
     }); 
   </script> 
